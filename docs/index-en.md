@@ -1,75 +1,153 @@
-Palworld is a new survival game developed by Pocketpair. The game became extremely popular overnight, hitting 2 million concurrent players. However, Pocketpair's servers are struggling to keep up with the large number of players. To solve this issue, Pocketpair allows players to set up dedicated servers, which offers the following advantages:
+<h1> Rapid deployment of the LobeChat computing nest </h1>
 
-(1) greater stability to reduce the risk of crashes or downtime;
+<blockquote>
+    <p><strong> Disclaimer:</strong> This service is provided by a third party. We try our best to ensure its security,
+        accuracy and reliability, but we cannot guarantee that it is completely free from failure, interruption, error
+        or attack. Therefore, the company hereby declares that it makes no representations, warranties or commitments
+        regarding the content, accuracy, completeness, reliability, suitability and timeliness of the Service and is not
+        liable for any direct or indirect loss or damage arising from your use of the Service; for third-party websites,
+        applications, products and services that you access through the Service, do not assume any responsibility for
+        its content, accuracy, completeness, reliability, applicability and timeliness, and you shall bear the risks and
+        responsibilities of the consequences of use; for any loss or damage arising from your use of this service,
+        including but not limited to direct loss, indirect loss, loss of profits, loss of goodwill, loss of data or
+        other economic losses, even if we have been advised in advance of the possibility of such loss or damage; we
+        reserve the right to amend this statement from time to time, so please check this statement regularly before
+        using the Service. If you have any questions or concerns about this Statement or the Service, please contact us.
+    </p>
+</blockquote>
 
-(2) easy adjustment of the server player count to 4, 12, or 32 players;
+<h2> Overview </h2>
 
-(3) control over server settings to allow for customization of gameplay elements, rules, and mods, creating a tailored experience for the gaming community.
+<p>LobeChat is a modern open source ChatGPT/LLMs chat application and development framework <br/>
+    It supports speech synthesis, multi-modal, and extensible (<a
+            href="https://lobehub.com/zh/blog/openai-function-call">function call</a>) plug-in system. You can use
+    LobeChat to have your own ChatGPT/Gemini/Claude/Ollama application for free with one click </p>
 
-This topic describes how to establish a dedicated server for Palworld in Alibaba Cloud with a few clicks. You only need to configure the settings on the page as prompted. Then, the system will automatically create an ECS instance, configure the port and firewall, and install the game environment. The whole process takes only 2 to 3 minutes with no coding involved.
+<h2> Prerequisites </h2>
 
-# Create an ECS instance
-## Step 1: Go to the Rapid Deployment of Palworld online services page
+<p><font style="color:black;"> To deploy a Dify Community Edition service instance, you need to access and
+    create some Alibaba Cloud resources. Therefore, your account must contain permissions for the following
+    resources. </font><font style="color:black;"> </font><strong><font style="color:black;">
+    Description </font></strong><font style="color:rgb(51, 51>: 51);">: this permission is required only when your account is a RAM account. </font></p>
 
-(1) Log on to the Alibaba Cloud International site [alibabacloud.com](https://www.alibabacloud.com).
+<table>
+<thead>
+<tr>
+    <th><font style="color:black;"> Permission policy name </font></th>
+    <th><font style="color:black;"> Remarks </font></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><font style="color:black;">AliyunECSFullAccess</font></td>
+        <td><font style="color:black;"> Permissions to manage ECS </font></td>
+    </tr>
+    <tr>
+        <td><font style="color:black;">AliyunVPCFullAccess</font></td>
+        <td><font style="color:black;"> Permissions to manage a VPC </font></td>
+    </tr>
+    <tr>
+        <td><font style="color:black;">AliyunROSFullAccess</font></td>
+        <td><font style="color:black;"> Manage permissions for the Resource Orchestration Service
+            (ROS) </font></td>
+    </tr>
+    <tr>
+        <td><font style="color:black;">AliyunComputeNestUserFullAccess</font></td>
+        <td><font style="color:black;"> Manage user-side permissions for the compute nest service
+            (ComputeNest) </font></td>
+    </tr>
+    </tbody>
+    </table>
 
-(2) Visit the "[Rapid deployment of Palworld online services](https://computenest.console.aliyun.com/service/instance/create/ap-southeast-1?type=user&ServiceId=service-1cdad6b8bab640d4bf55)" page  and click Launch Now.
+<h2> Billing instructions </h2>
 
-![image](1.png)
+<p><font style="color:black;"> The cost of LobeChat community edition deployment in computing nest mainly
+    involves:</font></p>
 
-Most required settings, including the network protocol and port (UDP protocol and port 8211), are pre-configured.
-## Step 2: Configure the ECS instance
-On the Create Service Instance page, configure the following parameters:
+<ul>
+    <li><font style="color:black;"> selected vCPU and memory specifications </font></li>
+    <li><font style="color:black;"> System disk type and capacity </font></li>
+    <li><font style="color:black;"> Internet bandwidth </font></li>
+</ul>
 
-(1) **Service Instance Name**: Enter the instance name. We recommend that you use the default name.
+<h2> Deployment Architecture </h2>
 
-(2) **Region**: Select the region where you want to deploy the ECS instance. We recommend that you use the default value, which is the city closest to you.
+<p><img src="./img-en/deploy.png" alt=""/></p>
 
-(3) **Pay Period Unit and Period**: Select a subscription duration for the ECS instance. We recommend that you specify three months as the subscription duration.
+<h2> Parameter description </h2>
 
-(4) **Select the ECS instance specifications**. Higher specifications result in a smoother gaming experience. Palworld is a memory-intensive game. We recommend that you specify 4vCPU 16GiB or higher specifications for your ECS instance. 4vCPU 16GiB is recommenced by Pocketpair, developer of the game. For more information, visit https://tech.palworldgame.com/dedicated-server-guide. We recommend that you set the **Internet Charge Type** parameter to **Pay-by-bandwidth**. The pay-by-bandwidth metering method does not impose limits on the bandwidth, which reduces latency and provides a better gaming experience.
+<table>
+    <thead>
+    <tr>
+        <th><font style="color:black;"> parameter group </font></th>
+        <th><font style="color:black;"> parameter items </font></th>
+        <th><font style="color:black;"> Description </font></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><font style="color:black;"> Service instance </font></td>
+        <td><font style="color:black;"> Service instance name </font></td>
+        <td><font style="color:black;"> No more than 64 characters in length, must start with an English
+            letter, and can contain numbers, English letters, dashes (-), and underscores (_)</font></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><font style="color:black;"> Region </font></td>
+        <td><font style="color:black;"> Region where the service instance is deployed </font></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><font style="color:black;"> Payment type </font></td>
+        <td><font style="color:black;"> Resource billing type: Pay-As-You-Go and Subscription </font></td>
+    </tr>
+    <tr>
+        <td><font style="color:black;">ECS instance configuration </font></td>
+        <td><font style="color:black;"> instance type </font></td>
+        <td><font style="color:black;"> Instance specifications available in the Availability Zone </font>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><font style="color:black;"> Instance password </font></td>
+        <td><font style="color:black;"> is 8-30 in length and must contain three items (uppercase letters,
+            lowercase letters, numbers, ()'~! @#$%^&*-+=<{}[]:;'<>,. special symbols in?/)</font></td>
+    </tr>
+    <tr>
+        <td><font style="color:black;"> Network Configuration </font></td>
+        <td><font style="color:black;"> Availability Zone </font></td>
+        <td><font style="color:black;"> Zone where the ECS instance is located </font></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><font style="color:black;">VPC ID</font></td>
+        <td><font style="color:black;"> VPC where the resource is located </font></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><font style="color:black;"> Switch ID</font></td>
+        <td><font style="color:black;"> Switch where the resource is located </font></td>
+    </tr>
+    </tbody>
+</table>
 
-![image](2.png)
+<h2> Deployment process </h2>
 
-(5) **Instance Password**: Enter a password for the ECS instance. The password is required when you log on to the ECS instance.
-(6) **Availability Zone**: Select the zone in which the ECS instance resides. We recommend that you use the default zone.
-After you complete the configurations, click Next: Confirm Order to submit the order.
-## Step 3: Purchase the service
-In the Terms of Service section, read and select the check box to agree to the terms of service and then click Create Now to create an order.
-
-![image](3-1.jpg)
-
-If the Submitted message appears, it indicates that the order was created successfully. You can click View Service to view the instance.
-
-![image](4.png)
-
-If you create a subscription-type order, you'll find an unpaid instance, click "Complete Payment" and finish the payment, the instance will be deployed immediately.
-
-![image](4-1.jpg)
-
-![image](5.png)
-
-## Step 4: Obtain the IP address of the ECS instance
-The ECS instance can be created in less than a minute. When the status of the instance changes to **Deployed**, click the ID of the instance to go to the instance details page.
-In this step, the Palworld server installation program is preloaded in the image of the ECS instance that you created.
-
-![image](6.png)
-
-On the Overview tab, the IP address of the ECS instance is displayed in the Service Addresses field, which will be used for subsequent configuration
-
-![image](7.png)
-
-# Start a multiplayer game
-(1) Launch Palworld and select Join Multiplayer Game from the main menu.
-
-![image](12.jpg)
-
-Enter the IP address obtained in Sub-step 4 of Step 1 in the text box at the bottom of the page and click **Connect**.
-
-![image](11.jpg)
-
-You are now ready to play!
-
-![image](10.png)
-
-An out-of-memory issue may occur during the running of the game. A quick solution to mitigate the impact of this issue is to regularly restart your server. We recommend that you create a scheduled task in the Alibaba Cloud Manage Console to automatically restart your ECS instance during off-peak hours.
+<ol>
+    <li> visit the compute nest LobeChat<a
+            href="https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=LobeChat%E7%A4%BE%E5%8C%BA%E7%89%88">
+        deployment link </a> and fill in the deployment parameters as prompted
+    </li>
+    <li> Fill in the instance parameters <img src="./1.png" alt=""/></li>
+    <li> Fill in the network parameters and click "Next: Confirm Order" <img
+      src="./2.png" alt=""/></li>
+    <li> Click Create Now and wait for the service instance deployment to complete <img 
+                                                                                     src="./3.png" alt=""/>
+    </li>
+    <li> After the service instance is deployed, click the instance ID to go to the details page <img src="./img-en/serviceInstance1.png" alt=""/>
+    </li>
+    <li> Use the URL to access the service instance <img src="./img-en/serviceInstance2.png" alt=""/></li>
+    <li> Go to the LobeChat application interface and configure the API Key<img src="./img-en/lobechat.png" alt=""/></li>
+    for the model.
+    <li> Get started with LobeChat!</li>
+</ol>
